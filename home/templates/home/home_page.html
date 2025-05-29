@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="hero text-center py-5 bg-light">
+  {% if page.image %}
+    {% image page.image fill-1200x400 class="img-fluid" %}
+  {% endif %}
+  <h1 class="mt-3">{{ page.hero_text }}</h1>
+  {% if page.hero_cta and page.hero_cta_link %}
+    <a href="{{ page.hero_cta_link.url }}" class="btn btn-primary mt-3">{{ page.hero_cta }}</a>
+  {% endif %}
+</div>
+
+<div class="container mt-5">
+  {{ page.body|richtext }}
+</div>
+{% endblock %}

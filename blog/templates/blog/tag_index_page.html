@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{%block extra_css%}
+<link rel="stylesheet" type="text/css" href="{% static 'css/tag_index_page.css' %}">
+{%endblock%}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1>Browse by Tag</h1>
+
+    <div class="tags">
+        {% for tag in all_tags %}
+            <a class="tag-button" href="?tag={{ tag }}">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+
+    {% if selected_tag %}
+        <h2>Posts tagged "{{ selected_tag }}"</h2>
+        {% if blogposts %}
+            {% for post in blogposts %}
+                <div class="blogpost-item mb-3 p-3 border rounded shadow-sm">
+                    <h4><a href="{% pageurl post %}">{{ post.title }}</a></h4>
+                    <small>Revised on: {{ post.latest_revision_created_at|date:"F j, Y" }}</small>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts found for this tag.</p>
+        {% endif %}
+    {% else %}
+        <p>Select a tag to view related posts.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

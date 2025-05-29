@@ -1,0 +1,22 @@
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.tag-button {
+    background-color: rgb(147, 147, 225);
+    padding: 8px 12px;
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.tag-button:hover,
+.tag-button:focus {
+    background-color: rgb(125, 125, 192);
+    outline: none;
+}
