@@ -24,6 +24,10 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
+    'django_recaptcha',
+    'wagtailcaptcha',
+    "wagtail_localize",
+    "wagtail_localize.locales",
     "blog",
     "portfolio",
     "wagtail.contrib.settings",
@@ -54,6 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'django.middleware.locale.LocaleMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -122,14 +127,27 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
+    ('en', "English"),
+    ('fr', "French"),
+    ('es', "Spanish"),
+]
+WAGTAILADMIN_PERMITTED_LANGUAGES = ['en']
 
 TIME_ZONE = "UTC"
 
 USE_I18N = True
+USE_L10N = True
+WAGTAIL_I18N_ENABLED = True
 
 USE_TZ = True
 
+# Google Recaptcha
+# https://cloud.google.com/security/products/recaptcha
+RECAPTCHA_PUBLIC_KEY = "6LdOD1MrAAAAAAoBiPpNld3c9dm17HvzLdI1XVlj"
+RECAPTCHA_PRIVATE_KEY = "6LdOD1MrAAAAAGTVpllcD-uSAO4grvcXBc0TVfpB"
+NOCAPTCHA = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -186,3 +204,4 @@ WAGTAILADMIN_BASE_URL = "http://example.com"
 # if untrusted users are allowed to upload files -
 # see https://docs.wagtail.org/en/stable/advanced_topics/deploying.html#user-uploaded-files
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
+

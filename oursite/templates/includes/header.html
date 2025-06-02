@@ -1,7 +1,16 @@
-{% load wagtailcore_tags navigation_tags wagtailuserbar menu_tags %}
+{% load i18n wagtailcore_tags navigation_tags wagtailuserbar menu_tags %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <header>
     <nav>
         {% main_menu ul_class="navbar-nav" %}
+        <form action="{% url 'set_language' %}" method="post" style="display:inline; margin-left:2rem;">
+            {% csrf_token %}
+            <select name="language" onchange="this.form.submit()">
+                <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+                <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+            </select>
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        </form>
     </nav>
 </header>

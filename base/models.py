@@ -28,6 +28,7 @@ from wagtail.contrib.settings.models import (
     register_setting,
 )
 from wagtail.snippets.models import register_snippet
+from wagtailcaptcha.models import WagtailCaptchaEmailForm
 
 @register_setting
 class NavigationSettings(BaseGenericSetting):
@@ -49,7 +50,7 @@ class FormField(AbstractFormField):
     page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
 
-class FormPage(AbstractEmailForm):
+class FormPage(WagtailCaptchaEmailForm):
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 

@@ -10,7 +10,7 @@
 
 
 .blog-post{
-    background-color: rgb(237, 238, 238);
+    background-color: #9393e1;
     padding:15px;
     border-radius: 8px;
 }
@@ -30,7 +30,7 @@
 
 .description{
     font-size: 1.2rem;
-    color: #555;
+    color: #ffffff;
     text-align: center;
     padding-bottom: 15px;
 }
