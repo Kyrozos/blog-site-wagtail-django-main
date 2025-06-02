@@ -25,9 +25,11 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 INSTALLED_APPS = [
     "blog",
+    "portfolio",
     "wagtail.contrib.settings",
     "base",
-    
+    "wagtailmenus",
+    'wagtail_modeladmin', # Wagtail ModelAdmin for custom admin interfaces  
     "home",
     "search",
     "wagtail.contrib.forms",
@@ -74,11 +76,11 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "wagtail.contrib.settings.context_processors.settings",
-
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "wagtailmenus.context_processors.wagtailmenus",
             ],
         },
     },
