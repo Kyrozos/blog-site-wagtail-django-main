@@ -86,4 +86,4 @@ __pycache__/
 local_settings.py
 .env
 db.sqlite3
-dev.py
+oursite/settings/dev.py
