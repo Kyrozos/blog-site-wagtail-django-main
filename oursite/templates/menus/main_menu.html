@@ -1,0 +1,15 @@
+{% load i18n wagtailcore_tags navigation_tags %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+<ul class="{{ menu.ul_class|default:'' }}">
+    {% for item in menu_items %}
+        {% with item.link_page|get_translation:LANGUAGE_CODE as translated %}
+            {% if translated %}
+                <li><a href="{{ translated.localized.url }}">{{ item.text|default:translated.title }}</a></li>
+            {% else %}
+                <li><a href="{{ item.link_page.localized.url }}">{{ item.text|default:item.link_page.title }}</a></li>
+            {% endif %}
+        {% endwith %}
+    {% endfor %}
+</ul>

@@ -143,12 +143,6 @@ WAGTAIL_I18N_ENABLED = True
 
 USE_TZ = True
 
-# Google Recaptcha
-# https://cloud.google.com/security/products/recaptcha
-RECAPTCHA_PUBLIC_KEY = "6LdOD1MrAAAAAAoBiPpNld3c9dm17HvzLdI1XVlj"
-RECAPTCHA_PRIVATE_KEY = "6LdOD1MrAAAAAGTVpllcD-uSAO4grvcXBc0TVfpB"
-NOCAPTCHA = True
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 

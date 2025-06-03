@@ -1,11 +1,13 @@
+#translation filter used for wagtailmenus
 from django import template
 
 from wagtail.models import Site
 
-# from base.models import FooterText
-
 register = template.Library()
 
-@register.simple_tag(takes_context=True)
-def get_site_root(context):
-    return Site.find_for_request(context["request"]).root_page
+@register.filter
+def get_translation(page, language_code):
+    try:
+        return page.get_translation(language_code)
+    except Exception:
+        return None
