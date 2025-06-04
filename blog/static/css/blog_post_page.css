@@ -16,19 +16,50 @@ form{
  color: #000000;
 }
 
-.author-info ul{
-    list-style-type: none;
+.author-info {
     display: flex;
-    flex-wrap: wrap;
-    gap:10px;
-    padding:0;
-    
+    align-items: center;
+    background: #23272f;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
-.author-item{
+.author-info p {
+    margin: 0 1.5rem 0 0;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.author-info ul {
     display: flex;
-    flex-direction: column;
-    gap:5px;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.author-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.author-item img {
+    border-radius: 50%;
+    border: 2px solid #0077cc;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    background: #fff;
+}
+
+.author-item span {
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.1rem;
 }
 
 .gallery{

@@ -9,8 +9,11 @@
         <form class="navbar-lang" action="{% url 'set_language' %}" method="post" style="display:inline; margin-left:2rem;">
             {% csrf_token %}
             <select name="language" onchange="this.form.submit()">
-                <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
-                <option value="fr" {% if LANGUAGE_CODE == 'fr' %}selected{% endif %}>Français</option>
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% for lang_code, lang_name in LANGUAGES %}
+                    <option value="{{ lang_code }}" {% if LANGUAGE_CODE == lang_code %}selected{% endif %}>{{ lang_name }}</option>
+                {% endfor %}
             </select>
             <input type="hidden" name="next" value="{{ request.get_full_path }}">
         </form>

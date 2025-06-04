@@ -1,7 +1,7 @@
 from django.db import models
-
 from modelcluster.fields import ParentalKey
-
+from wagtail.models import TranslatableMixin
+from wagtail.snippets.models import register_snippet
 from wagtail.admin.panels import (
     FieldPanel,
     FieldRowPanel,
@@ -38,7 +38,7 @@ class NavigationSettings(BaseGenericSetting):
             "Social settings",
         )
     ]
-class FormField(AbstractFormField):
+class FormField(TranslatableMixin, AbstractFormField):
     page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
 
@@ -59,3 +59,26 @@ class FormPage(WagtailCaptchaEmailForm):
             FieldPanel('subject'),
         ], "Email"),
     ]
+
+    def process_form_submission(self, form):
+        super().process_form_submission(form)
+        email = form.cleaned_data.get('email')
+        name = form.cleaned_data.get('name')
+        if email:
+            Subscriber.objects.get_or_create(email=email, defaults={'name': name or ''})
+
+
+@register_snippet
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=255, blank=True) 
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    panels = [
+        FieldPanel("email", help_text="The email address of the subscriber."),
+        FieldPanel("name", help_text="The full name of the subscriber (optional)."),
+        FieldPanel("subscribed_at", read_only=True),
+    ]
+
+    def __str__(self):
+        return self.email

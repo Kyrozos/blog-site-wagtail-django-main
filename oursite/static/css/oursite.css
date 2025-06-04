@@ -60,6 +60,15 @@ a:hover{
 }
 
 /* Style the main menu container */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #121212;
+    border-bottom: 2px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
 ul.navbar-nav,
 ul.menu,
 ul {

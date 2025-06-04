@@ -11,7 +11,7 @@
     <div class="description">
 	{{page.description|richtext}}
     </div>
-    <form action="{% url 'search' %}" method="get">
+    <form class="search-bar" action="{% url 'search' %}" method="get">
         <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
         <input type="submit" value="Search" class="button">
     </form>
@@ -20,6 +20,9 @@
     <div class="blog-post">
         <h2>
 		<a href="{% pageurl post %}">{{post.title}}</a>
+        <div class="post-info">
+            {{post.specific.intro|richtext}}
+        </div>
         </h2>
         <div class="post-info">
         {% with thumbnail_image=post.specific.main_image%}
@@ -29,9 +32,7 @@
         </div>
         {% endif %}
         {%endwith%}
-        <div class="post-info">
-            {{post.specific.intro|richtext}}
-        </div>
+
     </div>
 	</div>
 	

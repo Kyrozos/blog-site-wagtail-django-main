@@ -3,23 +3,7 @@
     margin:auto;
     display:flex;
     flex-direction: column;
-    gap:30px;
     padding: 20px;
-   
-}
-
-
-.blog-post{
-    background-color: #2e2e2e;
-    padding:15px;
-    border-radius: 8px;
-}
-
-.post-info{
-    display:flex;
-    align-items: flex-start;
-    gap:20px;
-    font-size: 1.1rem;
 }
 
 .blog-title{
@@ -28,10 +12,113 @@
     font-size: 2.5rem;
 }
 
-.description{
+.search-bar {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0 2.5rem 0;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    background: #23272f;
+    color: #fff;
+    outline: none;
+    transition: border 0.2s, background 0.2s;
+}
+
+.search-bar input[type="text"]:focus {
+    border-color: #0077cc;
+    background: #181b20;
+}
+
+.search-bar input[type="submit"] {
+    padding: 0.75rem 2rem;
+    background: #0077cc;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-bar input[type="submit"]:hover {
+    background: #005fa3;
+}
+
+.blog-post {
+    background: #23272f;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+    padding: 2rem 2rem 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s;
+}
+
+.blog-post:hover {
+    box-shadow: 0 4px 24px rgba(0,119,204,0.12);
+}
+
+.blog-post h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.blog-post h2 a {
+    color: #0077cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.blog-post h2 a:hover {
+    color: #005fa3;
+    text-decoration: underline;
+}
+
+.thumbnail-image {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 300px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.10);
+}
+
+.post-info {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    margin-bottom: 0.5rem;
+}
+
+.description {
     font-size: 1.2rem;
-    color: #ffffff;
+    color: #cccccc;
+    margin-bottom: 2rem;
     text-align: center;
-    padding-bottom: 15px;
+}
+
+@media (min-width: 700px) {
+    .blog-post {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .thumbnail-image {
+        margin-right: 2rem;
+        margin-bottom: 0;
+    }
+    .post-info {
+        flex: 1;
+    }
 }
 
