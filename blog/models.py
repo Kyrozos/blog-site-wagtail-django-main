@@ -9,6 +9,8 @@ from django import forms
 from taggit.models import TaggedItemBase
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.search import index
+from django.utils.translation import get_language
+from wagtail.models import Locale
 
 class BlogIndexPage(Page):
     description = RichTextField(blank=True)
@@ -78,18 +80,25 @@ from .models import BlogPostPage, BlogPostTag
 class TagIndexPage(Page):
     def get_context(self, request):
         context = super().get_context(request)
-
         tag = request.GET.get("tag")
+        blogposts = BlogPostPage.objects.live()
+
+        # Filter by current locale
+        current_language = get_language()
+        try:
+            current_locale = Locale.objects.get(language_code=current_language)
+            blogposts = blogposts.filter(locale=current_locale)
+        except Locale.DoesNotExist:
+            pass
+
         if tag:
-            blogposts = BlogPostPage.objects.filter(tags__name=tag)
-            context["blogposts"] = blogposts
+            blogposts = blogposts.filter(tags__name=tag)
             context["selected_tag"] = tag
 
-        # Get only tags used in BlogPostPage using your custom through model
-        used_tag_ids = BlogPostTag.objects.values_list('tag_id', flat=True).distinct()
-        all_tags = Tag.objects.filter(id__in=used_tag_ids)
-
-        context["all_tags"] = all_tags
+        context["blogposts"] = blogposts
+        #Show only tags used in the current locale
+        used_tag_ids = blogposts.values_list('tags', flat=True).distinct()
+        context["all_tags"] = Tag.objects.filter(id__in=used_tag_ids)
         return context
 
 

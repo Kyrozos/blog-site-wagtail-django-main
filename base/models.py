@@ -7,17 +7,9 @@ from wagtail.admin.panels import (
     FieldRowPanel,
     InlinePanel,
     MultiFieldPanel,
-    PublishingPanel,
 )
 
 from wagtail.fields import RichTextField
-from wagtail.models import (
-    DraftStateMixin,
-    PreviewableMixin,
-    RevisionMixin,
-    TranslatableMixin,
-)
-
 # import AbstractEmailForm and AbstractFormField:
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 
