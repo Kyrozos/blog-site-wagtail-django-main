@@ -40,7 +40,7 @@
 
 .search-bar input[type="submit"] {
     padding: 0.75rem 2rem;
-    background: #0077cc;
+    background: #00a885;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -51,7 +51,7 @@
 }
 
 .search-bar input[type="submit"]:hover {
-    background: #005fa3;
+    background: #2cdebb;
 }
 
 .blog-post {
@@ -77,14 +77,13 @@
 }
 
 .blog-post h2 a {
-    color: #0077cc;
+    color: #00a885;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .blog-post h2 a:hover {
-    color: #005fa3;
-    text-decoration: underline;
+    color: #2cdebb;
 }
 
 .thumbnail-image {

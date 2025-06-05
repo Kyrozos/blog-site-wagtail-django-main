@@ -6,7 +6,7 @@
 }
 
 .tag-button {
-    background-color: #9393e1;
+    background-color: #00a885;
     padding: 8px 12px;
     color: white;
     border-radius: 20px;
@@ -17,6 +17,7 @@
 
 .tag-button:hover,
 .tag-button:focus {
-    background-color: rgb(125, 125, 192);
+    color: rgb(255, 255, 255);
+    background-color: #2cdebb;
     outline: none;
 }

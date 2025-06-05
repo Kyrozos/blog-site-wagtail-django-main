@@ -41,6 +41,15 @@ class BlogPostPage(Page):
         else:
             return None
  
+    def get_related_posts(self, count=3):
+        # Get the current locale for the page
+        current_locale = self.locale
+        # Get posts that share at least one tag, excluding self, and in the same locale
+        related = BlogPostPage.objects.live().public().filter(
+            tags__in=self.tags.all(),
+            locale=current_locale
+        ).exclude(id=self.id).distinct().order_by('-first_published_at')[:count]
+        return related
     
     content_panels = Page.content_panels + [FieldPanel("date"),
                                             FieldPanel("authors", widget=forms.CheckboxSelectMultiple),

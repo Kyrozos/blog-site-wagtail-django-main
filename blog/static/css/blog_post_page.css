@@ -75,7 +75,7 @@ form{
 }
 
 .tag-button{
-    background-color: rgb(147, 147, 225);
+    background-color: #00a885;
     padding:5px;
     color:white;
     border-radius: 5px;
@@ -83,11 +83,51 @@ form{
 }
 
 .tag-button:hover{
-    background-color:rgb(125, 125, 192);
+    background-color:rgb(0, 0, 0);
+    color:#00a885;
     text-decoration: none;
 }
 
 .return{
     padding:5px;
     font-weight: 700;
+}
+
+.related-posts {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: #23272f;
+    border-radius: 8px;
+}
+
+.related-posts h3 {
+    margin-top: 0;
+    color: #00a885;
+}
+
+.related-posts ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.related-posts li {
+    margin-bottom: 0.75rem;
+}
+
+.related-posts a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.related-posts a:hover {
+    text-decoration: underline;
+    color: #00a885;
+}
+
+.related-posts .date {
+    color: #aaa;
+    font-size: 0.95em;
+    margin-left: 0.5em;
 }
