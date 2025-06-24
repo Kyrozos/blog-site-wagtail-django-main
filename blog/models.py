@@ -67,19 +67,50 @@ class BlogPageImageGallery(Orderable):
                               on_delete=models.CASCADE)
     caption = models.CharField(max_length=255, blank=True)
     panels = [FieldPanel("image"), FieldPanel("caption")]
-    
 
 @register_snippet
 class Author(models.Model):
     name = models.CharField(max_length=255)
-    author_image = models.ForeignKey("wagtailimages.Image", related_name="+",
-                              on_delete=models.CASCADE)
+    bio = RichTextField(blank=True)
+    author_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    twitter = models.URLField(blank=True)
+    linkedin = models.URLField(blank=True)
+    github = models.URLField(blank=True)
+    # Add more social fields as needed
 
-    panels = [FieldPanel("name"), FieldPanel("author_image")]
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("bio"),
+        FieldPanel("author_image"),
+        FieldPanel("twitter"),
+        FieldPanel("linkedin"),
+        FieldPanel("github"),
+    ]
 
     def __str__(self):
         return self.name
     
+class AuthorProfilePage(Page):
+    author = models.ForeignKey(
+        Author,
+        on_delete=models.CASCADE,
+        related_name="profile_pages"
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("author"),
+    ]
+
+    # List all posts by this author
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["posts"] = BlogPostPage.objects.live().filter(authors=self.author)
+        return context
 
 from taggit.models import Tag
 

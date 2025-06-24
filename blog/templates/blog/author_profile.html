@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="author-profile">
+    {% if author.author_image %}
+        {% image author.author_image fill-150x150 class="author-avatar" %}
+    {% endif %}
+    <h1>{{ author.name }}</h1>
+    <div class="bio">{{ author.bio|richtext }}</div>
+    <div class="social-links">
+        {% if author.twitter %}<a href="{{ author.twitter }}">Twitter</a>{% endif %}
+        {% if author.linkedin %}<a href="{{ author.linkedin }}">LinkedIn</a>{% endif %}
+        {% if author.github %}<a href="{{ author.github }}">GitHub</a>{% endif %}
+    </div>
+    <h2>Posts by {{ author.name }}</h2>
+    <ul>
+        {% for post in posts %}
+            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% empty %}
+            <li>No posts yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

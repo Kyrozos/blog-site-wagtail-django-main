@@ -20,7 +20,8 @@
         {% for author in authors %}
         <li class="author-item">
             {% image author.author_image fill-60x60 %}
-            <span>{{ author.name }}</span>
+            <a href="{% url 'author_profile' author.id %}">{{ author.name }}</a>
+            <!-- <span>{{ author.name }}</span> -->
         </li>
         {% endfor %}
     </ul>
