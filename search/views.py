@@ -14,7 +14,7 @@ def search(request):
     except Locale.DoesNotExist:
         current_locale = None
 
-    # ✅ Apply locale filter before calling `.search()`
+    # Apply locale filter before calling `.search()`
     base_qs = Page.objects.live()
     if current_locale:
         base_qs = base_qs.filter(locale=current_locale)

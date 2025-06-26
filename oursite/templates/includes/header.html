@@ -3,13 +3,17 @@
 
 <header>
     <nav>
-        <div class="navbar-menu">
+        <button class="hamburger" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="navbar-menu" id="navbar-menu">
             {% main_menu ul_class="navbar-nav" %}
         </div>
         <form class="navbar-lang" action="{% url 'set_language' %}" method="post" style="display:inline; margin-left:2rem;">
             {% csrf_token %}
             <select name="language" onchange="this.form.submit()">
-                {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}
                 {% for lang_code, lang_name in LANGUAGES %}
                     <option value="{{ lang_code }}" {% if LANGUAGE_CODE == lang_code %}selected{% endif %}>{{ lang_name }}</option>
