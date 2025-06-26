@@ -20,22 +20,46 @@
     <div class="blog-post">
         <h2>
 		<a href="{% pageurl post %}">{{post.title}}</a>
+        {% if post.specific.featured %}
+            <span class="featured-label">Featured</span>
+        {% endif %}
         <div class="post-info">
             {{post.specific.intro|richtext}}
         </div>
+        <!-- Preview content directly under post-info, aligned with intro -->
+        <div class="preview-content">
+            {% with body=post.specific.body %}
+                {% if body %}
+                    {% with lines=body|striptags|linebreaksbr %}
+                        {% with preview=lines|truncatewords_html:30 %}
+                            <div class="preview-text">{{ preview|safe }}</div>
+                        {% endwith %}
+                    {% endwith %}
+                {% endif %}
+            {% endwith %}
+            <a class="read-more-btn" href="{% pageurl post %}">Read more</a>
         </h2>
         <div class="post-info">
         {% with thumbnail_image=post.specific.main_image%}
         {% if thumbnail_image %}
         <div class="thumbnail-image">
             {% image thumbnail_image fill-300x200 %}
+            {% with categories=post.specific.categories.all %}
+        {% if categories %}
+        <div class="categories">
+            Categories:
+            {% for category in categories %}
+                <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        </div>
         </div>
         {% endif %}
         {%endwith%}
-
-    </div>
-	</div>
-	
+        </div>
+    </div>	
     {%endfor%}
 </div>
 {% endblock %}

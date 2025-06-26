@@ -131,3 +131,38 @@ form{
     font-size: 0.95em;
     margin-left: 0.5em;
 }
+
+.featured-label {
+    display: inline-block;
+    background: #00a885;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.2em 0.8em;
+    border-radius: 16px;
+    margin-left: 0.75em;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    vertical-align: middle;
+}
+
+.categories {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    font-size: 1.05rem;
+    color: #00a885;
+    font-weight: 500;
+}
+
+.categories a {
+    color: #0077cc;
+    text-decoration: none;
+    margin-right: 0.3em;
+    transition: color 0.2s;
+}
+
+.categories a:hover {
+    color: #2cdebb;
+    text-decoration: underline;
+}

@@ -1,16 +1,15 @@
 from django.db import models
-from wagtail.models import Page, Orderable
+from wagtail.models import Page, Orderable, Locale
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from datetime import date
 from modelcluster.models import ParentalKey, ParentalManyToManyField
 from wagtail.snippets.models import register_snippet
 from django import forms
-from taggit.models import TaggedItemBase
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.search import index
 from django.utils.translation import get_language
-from wagtail.models import Locale
+from taggit.models import Tag, TaggedItemBase
 
 class BlogIndexPage(Page):
     description = RichTextField(blank=True)
@@ -29,11 +28,12 @@ class BlogPostTag(TaggedItemBase):
 
 class BlogPostPage(Page):
     date = models.DateField("Post Date", default=date.today)
-    intro = RichTextField(blank=True)
+    intro = RichTextField(blank=True, max_length=500, help_text="A short summary of the post, displayed on the index page.")
     body = RichTextField(blank=True)
     authors = ParentalManyToManyField("blog.Author", blank=True)
     tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
-    
+    featured = models.BooleanField(default=False, help_text="Check this box to feature this post on the homepage.")
+    categories = ParentalManyToManyField("blog.Category", blank=True, related_name="blog_posts")
     def main_image(self):
         thumbnail_image = self.image_gallery.first()
         if thumbnail_image:
@@ -51,15 +51,37 @@ class BlogPostPage(Page):
         ).exclude(id=self.id).distinct().order_by('-first_published_at')[:count]
         return related
     
-    content_panels = Page.content_panels + [FieldPanel("date"),
-                                            FieldPanel("authors", widget=forms.CheckboxSelectMultiple),
-                                            FieldPanel("intro"),
-                                            FieldPanel("body"),
-                                            InlinePanel("image_gallery", label="gallery images"),
-                                            FieldPanel("tags")]
+    def get_featured_posts(self, count=3):
+        # Get featured posts in the same locale
+        current_locale = self.locale
+        featued = BlogPostPage.objects.live().public().filter(
+            featured=True,
+            locale=current_locale
+        ).exclude(id=self.id).distinct().order_by('-first_published_at')[:count]
+        return featued
+    
+    # @property
+    # def word_count(self):
+    #     # Count words in the body field
+    #     import re
+    #     text = re.sub('<[^<]+?>', '', self.body or "")
+    #     return len(text.split())
+
+    content_panels = Page.content_panels + [
+        FieldPanel("date"),
+        FieldPanel("authors", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("intro"),
+        FieldPanel("body"),
+        InlinePanel("image_gallery", label="gallery images"),
+        FieldPanel("tags"),
+        FieldPanel("featured", widget=forms.CheckboxInput),
+        FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
+        # FieldPanel("word_count", read_only=True),
+    ]
 
     search_fields = Page.search_fields + [index.SearchField("body"), index.SearchField("intro")]
-    
+
+
 class BlogPageImageGallery(Orderable):
     page = ParentalKey(BlogPostPage, related_name="image_gallery",
                        on_delete=models.CASCADE)
@@ -69,8 +91,32 @@ class BlogPageImageGallery(Orderable):
     panels = [FieldPanel("image"), FieldPanel("caption")]
 
 @register_snippet
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=500, unique=True, blank=True)
+    description = RichTextField(blank=True)
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("description"),
+    ]
+
+    def safe(self):
+        if not self.slug:
+            return self.name.lower().replace(" ", "-")
+        return self.slug
+
+    def get_absolute_url(self):
+        return f"/categories/{self.safe()}/"
+    
+    def __str__(self):
+        return self.name
+
+@register_snippet
 class Author(models.Model):
     name = models.CharField(max_length=255)
+    # slug = models.SlugField(max_length=500, unique=True, blank=True)
     bio = RichTextField(blank=True)
     author_image = models.ForeignKey(
         'wagtailimages.Image',
@@ -92,9 +138,17 @@ class Author(models.Model):
         FieldPanel("github"),
     ]
 
+    # def safe(self):
+    #     if not self.slug:
+    #         return self.name.lower().replace(" ", "-")
+    #     return self.slug
+
+    # def get_absolute_url(self):
+    #     return f"/authors/{self.safe()}/"
+    
     def __str__(self):
         return self.name
-    
+
 class AuthorProfilePage(Page):
     author = models.ForeignKey(
         Author,
@@ -111,11 +165,6 @@ class AuthorProfilePage(Page):
         context = super().get_context(request)
         context["posts"] = BlogPostPage.objects.live().filter(authors=self.author)
         return context
-
-from taggit.models import Tag
-
-from taggit.models import Tag
-from .models import BlogPostPage, BlogPostTag
 
 class TagIndexPage(Page):
     def get_context(self, request):
@@ -142,7 +191,7 @@ class TagIndexPage(Page):
         return context
 
 
-        
-        
-        
-                              
+
+
+
+

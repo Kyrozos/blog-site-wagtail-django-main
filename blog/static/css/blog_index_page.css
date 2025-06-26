@@ -107,6 +107,79 @@
     text-align: center;
 }
 
+.featured-label {
+    display: inline-block;
+    background: #00a885;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.2em 0.8em;
+    border-radius: 16px;
+    margin-left: 0.75em;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    vertical-align: middle;
+}
+
+.categories {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    font-size: 1.05rem;
+    color: #00a885;
+    font-weight: 500;
+}
+
+.categories a {
+    color: #0077cc;
+    text-decoration: none;
+    margin-right: 0.3em;
+    transition: color 0.2s;
+}
+
+.categories a:hover {
+    color: #2cdebb;
+    text-decoration: underline;
+}
+
+.preview-content {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+    color: #e0e0e0;
+    font-size: 1.08rem;
+    line-height: 1.5;
+    max-width: 700px;
+}
+
+.preview-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 3.2em;
+    margin-bottom: 0.5em;
+    color: #cccccc;
+}
+
+.read-more-btn {
+    display: inline-block;
+    background: #0077cc;
+    color: #fff;
+    padding: 0.35em 1.2em;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 0.2em;
+}
+
+.read-more-btn:hover {
+    background: #2cdebb;
+    color: #23272f;
+}
+
 @media (min-width: 700px) {
     .blog-post {
         flex-direction: row;
