@@ -10,14 +10,23 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from wagtail.search import index
 from django.utils.translation import get_language
 from taggit.models import Tag, TaggedItemBase
+from django.utils.html import strip_tags
+from wagtail.models import PageManager
 
-class BlogIndexPage(Page):
-    description = RichTextField(blank=True)
+class ScheduledManager(PageManager):
+    def get_queryset(self):
+        return super().get_queryset().filter(
+            live=True,
+            date__lte=date.today()
+        )
     
+class BlogIndexPage(Page):
+    description = RichTextField(blank=True)   
     content_panels = Page.content_panels + [FieldPanel("description")]
+    
     def get_context(self, request):
         context = super().get_context(request)
-        blogposts = self.get_children().live().order_by("-first_published_at")
+        blogposts = BlogPostPage.scheduled.filter(locale=self.locale).order_by("-first_published_at")
         context["blogposts"] = blogposts
         
         return context
@@ -34,6 +43,10 @@ class BlogPostPage(Page):
     tags = ClusterTaggableManager(through=BlogPostTag, blank=True)
     featured = models.BooleanField(default=False, help_text="Check this box to feature this post on the homepage.")
     categories = ParentalManyToManyField("blog.Category", blank=True, related_name="blog_posts")
+    objects = PageManager()  # Default manager
+    scheduled = ScheduledManager()  # Custom manager for scheduled posts
+    word_count = models.IntegerField(blank=True, default=0)
+    
     def main_image(self):
         thumbnail_image = self.image_gallery.first()
         if thumbnail_image:
@@ -45,27 +58,18 @@ class BlogPostPage(Page):
         # Get the current locale for the page
         current_locale = self.locale
         # Get posts that share at least one tag, excluding self, and in the same locale
-        related = BlogPostPage.objects.live().public().filter(
+        related = BlogPostPage.scheduled.filter(
             tags__in=self.tags.all(),
             locale=current_locale
         ).exclude(id=self.id).distinct().order_by('-first_published_at')[:count]
         return related
     
     def get_featured_posts(self, count=3):
-        # Get featured posts in the same locale
-        current_locale = self.locale
-        featued = BlogPostPage.objects.live().public().filter(
+        # Get featured posts
+        featued = BlogPostPage.scheduled.public().filter(
             featured=True,
-            locale=current_locale
         ).exclude(id=self.id).distinct().order_by('-first_published_at')[:count]
         return featued
-    
-    # @property
-    # def word_count(self):
-    #     # Count words in the body field
-    #     import re
-    #     text = re.sub('<[^<]+?>', '', self.body or "")
-    #     return len(text.split())
 
     content_panels = Page.content_panels + [
         FieldPanel("date"),
@@ -76,7 +80,6 @@ class BlogPostPage(Page):
         FieldPanel("tags"),
         FieldPanel("featured", widget=forms.CheckboxInput),
         FieldPanel("categories", widget=forms.CheckboxSelectMultiple),
-        # FieldPanel("word_count", read_only=True),
     ]
 
     search_fields = Page.search_fields + [index.SearchField("body"), index.SearchField("intro")]
@@ -163,14 +166,14 @@ class AuthorProfilePage(Page):
     # List all posts by this author
     def get_context(self, request):
         context = super().get_context(request)
-        context["posts"] = BlogPostPage.objects.live().filter(authors=self.author)
+        context["posts"] = BlogPostPage.scheduled.filter(authors=self.author)
         return context
 
 class TagIndexPage(Page):
     def get_context(self, request):
         context = super().get_context(request)
         tag = request.GET.get("tag")
-        blogposts = BlogPostPage.objects.live()
+        blogposts = BlogPostPage.scheduled.filter(locale=self.locale).order_by("-first_published_at")
 
         # Filter by current locale
         current_language = get_language()

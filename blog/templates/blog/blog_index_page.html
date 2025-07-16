@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% load static wagtailcore_tags wagtailimages_tags %} {%block extra_css%}
+{% extends "base.html" %} {% load static wagtailcore_tags wagtailimages_tags%} {%block extra_css%}
 <link
 	rel="stylesheet"
 	type="text/css"
@@ -28,16 +28,11 @@
         </div>
         <!-- Preview content directly under post-info, aligned with intro -->
         <div class="preview-content">
-            {% with body=post.specific.body %}
-                {% if body %}
-                    {% with lines=body|striptags|linebreaksbr %}
-                        {% with preview=lines|truncatewords_html:30 %}
-                            <div class="preview-text">{{ preview|safe }}</div>
-                        {% endwith %}
-                    {% endwith %}
-                {% endif %}
-            {% endwith %}
+            <div class="preview-text">
+                {{post.body|striptags|truncatechars:180}}
+            </div>
             <a class="read-more-btn" href="{% pageurl post %}">Read more</a>
+        </div>
         </h2>
         <div class="post-info">
         {% with thumbnail_image=post.specific.main_image%}
