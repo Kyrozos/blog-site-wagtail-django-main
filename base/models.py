@@ -80,5 +80,8 @@ class Subscriber(models.Model):
         FieldPanel("subscribed_at", read_only=True),
     ]
 
+    class Meta:
+        unique_together = ('email', 'name')
+
     def __str__(self):
         return self.email

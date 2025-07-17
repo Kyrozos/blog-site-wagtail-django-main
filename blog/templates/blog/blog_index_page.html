@@ -4,7 +4,8 @@
 	type="text/css"
 	href='{% static "css/blog_index_page.css" %}'
 />
-{%endblock%} {% block content %}
+{%endblock%} 
+{% block content %}
 
 <div class="container">
 	<h1 class="blog-title">{{ page.title}}</h1>
@@ -31,15 +32,18 @@
             <div class="preview-text">
                 {{post.body|striptags|truncatechars:180}}
             </div>
-            <a class="read-more-btn" href="{% pageurl post %}">Read more</a>
+            {% with thumbnail_image=post.specific.main_image%}
+            {% if thumbnail_image %}
+            <div class="thumbnail-image">
+                {% image thumbnail_image fill-300x200 %}
+            </div>
+            {% endif %}
+            {%endwith%}
+                <a class="read-more-btn" href="{% pageurl post %}">Read more</a>
         </div>
         </h2>
         <div class="post-info">
-        {% with thumbnail_image=post.specific.main_image%}
-        {% if thumbnail_image %}
-        <div class="thumbnail-image">
-            {% image thumbnail_image fill-300x200 %}
-            {% with categories=post.specific.categories.all %}
+        {% with categories=post.specific.categories.all %}
         {% if categories %}
         <div class="categories">
             Categories:
@@ -49,10 +53,6 @@
         </div>
         {% endif %}
         {% endwith %}
-        </div>
-        </div>
-        {% endif %}
-        {%endwith%}
         </div>
     </div>	
     {%endfor%}
